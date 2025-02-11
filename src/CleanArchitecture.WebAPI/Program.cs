@@ -1,7 +1,7 @@
 using CleanArchitecture.Application;
 using CleanArchitecture.Infrastructure;
-using CleanArchitecture.WebAPI;
 using CleanArchitecture.WebAPI.Controllers;
+using CleanArchitecture.WebAPI.Middlewares;
 using CleanArchitecture.WebAPI.Modules;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.RateLimiting;
@@ -40,7 +40,7 @@ var app = builder.Build();
 
 app.MapOpenApi(); // OpenAPI servisini projeye ekliyoruz.
 app.MapScalarApiReference(); // Scalar API Reference servisini projeye ekliyoruz.
-
+    
 app.MapDefaultEndpoints();
 
 app.UseCors(x => x
@@ -51,9 +51,15 @@ app.UseCors(x => x
 
 app.RegisterRoutes();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseExceptionHandler();
 
-app.MapControllers().RequireRateLimiting("fixed");
+ExtensionsMiddleware.CreateFirstUser(app);
+
+app.MapControllers().RequireRateLimiting("fixed").RequireAuthorization();
+
 app.Run();
 
 

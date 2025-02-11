@@ -1,10 +1,13 @@
 ﻿using ClenaArchitecture.Domain.Abstractions;
 using ClenaArchitecture.Domain.Employees;
+using ClenaArchitecture.Domain.Users;
 using GenericRepository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Infrastructure.Context;
-internal sealed class ApplicationDbContext : DbContext,IUnitOfWork
+internal sealed class ApplicationDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>, IUnitOfWork
 {
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
@@ -15,6 +18,11 @@ internal sealed class ApplicationDbContext : DbContext,IUnitOfWork
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        modelBuilder.Ignore<IdentityUserClaim<Guid>>();
+        modelBuilder.Ignore<IdentityRoleClaim<Guid>>();
+        modelBuilder.Ignore<IdentityUserToken<Guid>>();
+        modelBuilder.Ignore<IdentityUserLogin<Guid>>();
+        modelBuilder.Ignore<IdentityUserRole<Guid>>();
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

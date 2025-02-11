@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.Application.Employees;
 using ClenaArchitecture.Domain.Employees;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;

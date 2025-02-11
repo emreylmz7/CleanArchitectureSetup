@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using TS.Result;
 
-namespace CleanArchitecture.WebAPI;
+namespace CleanArchitecture.WebAPI.Middlewares;
 
 public sealed class ExceptionHandler : IExceptionHandler
 {
