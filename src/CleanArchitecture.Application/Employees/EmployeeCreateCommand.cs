@@ -13,7 +13,8 @@ public sealed record EmployeeCreateCommand(
     DateOnly BirthOfDate,
     decimal Salary,
     Address? Address,
-    PersonalInformation PersonalInformation) : IRequest<Result<string>>;
+    PersonalInformation PersonalInformation,
+    bool IsActive) : IRequest<Result<string>>;
 
 public sealed class EmployeeCreateCommandValidator : AbstractValidator<EmployeeCreateCommand>
 {

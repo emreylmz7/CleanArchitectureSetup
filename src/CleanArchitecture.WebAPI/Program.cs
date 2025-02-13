@@ -10,6 +10,11 @@ using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+});
+
 builder.AddServiceDefaults();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -43,6 +48,8 @@ app.MapScalarApiReference(); // Scalar API Reference servisini projeye ekliyoruz
     
 app.MapDefaultEndpoints();
 
+app.UseHttpsRedirection(); // Https yönlendirmesini aktif hale getiriyoruz.
+
 app.UseCors(x => x
     .AllowAnyHeader()
     .AllowCredentials()
@@ -54,6 +61,7 @@ app.RegisterRoutes();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseResponseCompression();
 app.UseExceptionHandler();
 
 ExtensionsMiddleware.CreateFirstUser(app);
